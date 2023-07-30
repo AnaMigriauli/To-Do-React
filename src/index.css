@@ -1,5 +1,3 @@
-/* :root {
-} */
 * {
   margin: 0;
   padding: 0;
@@ -8,4 +6,22 @@
 body {
   width: 100%;
   height: 100%;
+}
+
+@font-face {
+  font-family: "JosefinSans-Bold";
+  src: url("./assets/fonts/JosefinSans-Bold.ttf");
+}
+
+@font-face {
+  font-family: "JosefinSans-Regular";
+  src: url("./assets/fonts/JosefinSans-Regular.ttf");
+}
+:root {
+  font-family: "Josefin Sans", sans-serif;
+}
+#root {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

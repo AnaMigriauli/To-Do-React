@@ -27,68 +27,84 @@ const MainContainer = () => {
   const DeleteElementHandler = (id) => {
     setNoteList(noteList.filter((el) => el.id !== id));
   };
-
-  const CompletedNoteHandler = () => {
-    setIsCheck((prevState) => !prevState);
+  const CompletedNoteHandler = (id) => {
+    noteList.map((el) => {
+      if (el.id === id) {
+        setIsCheck((prevState) => !prevState);
+      }
+    });
   };
 
-  console.log(noteList);
+  console.log(check);
   return (
     <div className={classes["main-container"]}>
       <div className={classes["light-img"]}>
         <img src={light}></img>
       </div>
-      <div className={classes.main}>
-        <div className={classes.header}>
-          <img src={logo} alt="logo" />
-          <img src={moon} alt="moon" />
-        </div>
-        <div className={classes["input-container"]}>
-          <button
-            className={classes["check-box"]}
-            onClick={CompletedNoteHandler}
-          >
-            {!check ? (
-              <div className={classes.circle}></div>
-            ) : (
-              <img src={checkIcon} alt="check Icon" />
-            )}
-          </button>
+      <div className={classes["light-mode"]}>
+        <div className={classes.main}>
+          <div className={classes.header}>
+            <img src={logo} alt="logo" />
+            <img src={moon} alt="moon" />
+          </div>
+          <div className={classes["input-container"]}>
+            <button
+              className={classes["check-box"]}
+              onClick={CompletedNoteHandler}
+            >
+              {!check ? (
+                <div className={classes.circle}></div>
+              ) : (
+                <img src={checkIcon} alt="check Icon" />
+              )}
+            </button>
 
-          <input
-            placeholder="Create a new todo…"
-            onKeyDown={(e) => {
-              e.key === "Enter" ? AddElementHandler() : "";
-            }}
-            onChange={(e) => {
-              CreateElementHandler(e.target.value);
-            }}
-          />
-        </div>
-        <ul>
-          {noteList.map((list) => (
-            <div key={list.id} className={classes["list-item-container"]}>
-              <button
-                className={classes["check-box"]}
-                onClick={CompletedNoteHandler}
-              >
-                {!check ? (
-                  <div className={classes.circle}></div>
-                ) : (
-                  <img src={checkIcon} alt="check Icon" />
-                )}
-              </button>
-              <li className={classes["list-item"]}>{list.el}</li>
+            <input
+              placeholder="Create a new todo…"
+              onKeyDown={(e) => {
+                e.key === "Enter" ? AddElementHandler() : "";
+              }}
+              onChange={(e) => {
+                CreateElementHandler(e.target.value);
+              }}
+            />
+          </div>
+          <ul>
+            {noteList.map((list) => (
+              <div key={list.id} className={classes["list-item-container"]}>
+                <button
+                  className={classes["check-box"]}
+                  onClick={() => {
+                    CompletedNoteHandler(list.id);
+                  }}
+                >
+                  {check ? (
+                    <div className={classes.circle}></div>
+                  ) : (
+                    <img src={checkIcon} alt="check Icon" />
+                  )}
+                </button>
+                <li className={classes["list-item"]}>{list.el}</li>
 
-              <button
-                className={classes.btn}
-                onClick={() => DeleteElementHandler(list.id)}
-              >
-                <img src={deleteIcon} alt="delete Icon" />
-              </button>
-            </div>
-          ))}
-        </ul>
+                <button
+                  className={classes.btn}
+                  onClick={() => DeleteElementHandler(list.id)}
+                >
+                  <img src={deleteIcon} alt="delete Icon" />
+                </button>
+              </div>
+            ))}
+          </ul>
+          <div className={classes.completed}>
+            <span>5 items left</span>
+            <span> Clear Completed</span>
+          </div>
+          <div className={classes.footer}>
+            <span>All</span>
+            <span>Active</span>
+            <span>Completed</span>
+          </div>
+        </div>
       </div>
     </div>
   );

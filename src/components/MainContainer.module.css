@@ -3,18 +3,32 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  font-family: "Josefin Sans", sans-serif;
+  width: 375px;
+  height: 730px;
 }
 .light-img {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 .light-img img {
   background: linear-gradient(225deg, #5596ff 0%, #ac2deb 100%);
 }
+.light-mode {
+  width: 375px;
+  height: 530px;
+  background: #fafafa;
+  display: flex;
+  justify-content: center;
+}
 .main {
   width: 327px;
-  background-color: aquamarine;
+  position: absolute;
+  top: 48px;
+  font-family: "Josefin Sans", sans-serif;
+  box-shadow: 0px 35px 50px -15px #c2c3d680;
 }
 .header {
   display: flex;
@@ -31,10 +45,12 @@
   background: #ffffff;
   box-shadow: 0px 35px 50px -15px #c2c3d680;
   margin-bottom: 16px;
+  border-radius: 8px;
 }
 .check-box {
   background: none;
   border: none;
+  margin-left: 20px;
 }
 .circle {
   width: 20px;
@@ -48,6 +64,7 @@
   width: 100%;
   border: none;
   outline: none;
+  caret-color: #3a7cfd;
 }
 
 .input-container input::placeholder {
@@ -60,6 +77,8 @@
 }
 ul {
   list-style: none;
+  background: #ffffff;
+  border-radius: 8px;
 }
 ul li {
   cursor: pointer;
@@ -67,7 +86,7 @@ ul li {
 .list-item-container {
   display: flex;
   justify-content: space-between;
-  border-bottom: 1px solid red;
+  border-bottom: 1px solid #e3e4f1;
   padding: 16px 20px;
   width: 100%;
 }
@@ -83,4 +102,18 @@ ul button {
 
 .list-item-container:hover .btn {
   visibility: visible;
+}
+.completed {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 20px 20px 20px;
+  background: #ffffff;
+}
+.completed span {
+  font-family: "Josefin Sans", sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 12px;
+  letter-spacing: -0.17px;
+  color: #9495a5;
 }

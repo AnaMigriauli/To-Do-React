@@ -92,6 +92,7 @@ ul span {
   border-bottom: 1px solid #e3e4f1;
   padding: 16px 20px;
   width: 100%;
+  cursor: move;
 }
 ul button {
   background: transparent;
@@ -140,6 +141,9 @@ ul button {
   background: none;
   border: none;
 }
+.completed button:hover {
+  color: #494c6b;
+}
 .footer {
   height: 48px;
   background: #ffffff;
@@ -163,6 +167,9 @@ ul button {
 }
 .footer button:first-child {
   color: #3a7cfd;
+}
+.footer button:hover {
+  color: #494c6b;
 }
 .drop {
   font-size: 14px;

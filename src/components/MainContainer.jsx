@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import classes from "./MainContainer.module.css";
 import light from "../assets/images/Bitmap.svg";
 import logo from "../assets/images/TODO.svg";
@@ -16,9 +16,8 @@ const MainContainer = () => {
   const [note, setNote] = useState("");
   const [activeNotes, setActiveNotes] = useState([]);
   const [completedNotes, setCompletedNotes] = useState([]);
-  const [active, setActive] = useState(false);
-  const [completed, setcompleted] = useState(false);
-  // const [allElement,setAllElement]=useState(false)
+  const [active, setActive] = useState("All");
+  const [checked, setIsChecked] = useState(false);
 
   useEffect(() => {
     localStorage.setItem("list", JSON.stringify(noteList));
@@ -30,6 +29,7 @@ const MainContainer = () => {
     }
   };
 
+  console.log(note);
   const AddElementHandler = () => {
     if (note) {
       setNoteList((prevState) => {
@@ -38,8 +38,8 @@ const MainContainer = () => {
           {
             el: note,
             id: Math.random().toString(),
-            state: false,
-            isCrossed: false,
+            completed: false,
+            isDragging: false,
           },
         ];
       });
@@ -53,13 +53,17 @@ const MainContainer = () => {
   };
 
   const AlldeleteHandler = () => {
-    setNoteList(noteList.filter((el) => el.state == false));
+    setNoteList(noteList.filter((el) => el.completed == false));
   };
   const CompletedNoteHandler = (id) => {
     setNoteList((prevState) => {
       return prevState.map((el) => {
         if (el.id === id) {
-          return { ...el, state: !el.state, isCrossed: !el.isCrossed };
+          return {
+            ...el,
+
+            completed: !el.completed,
+          };
         }
         return el;
       });
@@ -68,7 +72,7 @@ const MainContainer = () => {
     setActiveNotes((prevState) => {
       return prevState.map((el) => {
         if (el.id === id) {
-          return { ...el, state: !el.state, isCrossed: !el.isCrossed };
+          return { ...el, completed: !el.completed };
         }
         7;
         return el;
@@ -77,29 +81,66 @@ const MainContainer = () => {
     setCompletedNotes((prevState) => {
       return prevState.map((el) => {
         if (el.id === id) {
-          return { ...el, state: !el.state, isCrossed: !el.isCrossed };
+          return { ...el, completed: !el.completed };
         }
         return el;
       });
     });
   };
-  const notes = noteList.filter((el) => el.state == false);
+  const activenotes = noteList.filter((el) => el.completed == false);
 
   const ActiveElementHandler = () => {
-    setActiveNotes(notes);
-    setActive(true);
+    setActiveNotes(activenotes);
+    setActive("active");
   };
 
   const AllElementHandler = () => {
-    location.reload();
+    setActive("All");
   };
 
   const CompletedElementHandler = () => {
-    const completed = noteList.filter((el) => el.state == true);
+    const completed = noteList.filter((el) => el.completed == true);
     setCompletedNotes(completed);
-    setcompleted(true);
+    setActive("completed");
   };
-  console.log(completed);
+  console.log(noteList);
+
+  const CompletedTaskHandler = () => {
+    if (note) {
+      setIsChecked(!checked);
+    }
+  };
+
+  //DRAG AND DROP
+  let dragItem = useRef();
+  let dragOverItem = useRef();
+
+  const OnDragStart = (e, index) => {
+    dragItem.current = index;
+  };
+
+  const OnDragEnter = (e, index) => {
+    dragOverItem.current = index;
+
+    const updatedNoteList = noteList.map((item, idx) => ({
+      ...item,
+      isDragging: idx === index,
+    }));
+
+    setNoteList(updatedNoteList);
+  };
+
+  const OnDragEnd = () => {
+    const updatedNoteList = [...noteList];
+
+    const draggedItem = updatedNoteList[dragItem.current];
+    updatedNoteList.splice(dragItem.current, 1);
+    updatedNoteList.splice(dragOverItem.current, 0, draggedItem);
+
+    dragItem.current = null;
+    dragOverItem.current = null;
+    setNoteList(updatedNoteList);
+  };
   return (
     <div className={classes["main-container"]}>
       <div className={classes["light-img"]}>
@@ -114,14 +155,17 @@ const MainContainer = () => {
           <div className={classes["input-container"]}>
             <button
               className={classes["check-box"]}
-              onClick={CompletedNoteHandler}
+              onClick={() => CompletedTaskHandler()}
             >
-              <div className={classes.circle}></div>
-
-              {/* <img src={checkIcon} alt="check Icon" /> */}
+              {!checked ? (
+                <div className={classes.circle}></div>
+              ) : (
+                <img src={checkIcon} alt="check Icon" />
+              )}
             </button>
 
             <input
+              className={checked ? classes["list-item"] : ""}
               placeholder="Create a new todo…"
               value={note}
               onKeyDown={(e) => {
@@ -133,38 +177,7 @@ const MainContainer = () => {
             />
           </div>
           <ul>
-            {active
-              ? activeNotes.map((list) => (
-                  <li key={list.id} className={classes["list-item-container"]}>
-                    <div>
-                      <button
-                        className={classes["check-box"]}
-                        onClick={() => {
-                          CompletedNoteHandler(list.id);
-                        }}
-                      >
-                        {!list.state ? (
-                          <div key={list.id} className={classes.circle}></div>
-                        ) : (
-                          <img key={list.id} src={checkIcon} alt="check Icon" />
-                        )}
-                      </button>
-                      <span
-                        key={list.id}
-                        className={list.isCrossed ? classes["list-item"] : ""}
-                      >
-                        {list.el}
-                      </span>
-                    </div>
-                    <button
-                      className={classes.btn}
-                      onClick={() => DeleteElementHandler(list.id)}
-                    >
-                      <img src={deleteIcon} alt="delete Icon" />
-                    </button>
-                  </li>
-                ))
-              : completed
+            {active === "completed"
               ? completedNotes.map((list) => (
                   <li key={list.id} className={classes["list-item-container"]}>
                     <div>
@@ -174,7 +187,38 @@ const MainContainer = () => {
                           CompletedNoteHandler(list.id);
                         }}
                       >
-                        {!list.state ? (
+                        {!list.completed ? (
+                          <div key={list.id} className={classes.circle}></div>
+                        ) : (
+                          <img key={list.id} src={checkIcon} alt="check Icon" />
+                        )}
+                      </button>
+                      <span
+                        key={list.id}
+                        className={list.completed ? classes["list-item"] : ""}
+                      >
+                        {list.el}
+                      </span>
+                    </div>
+                    <button
+                      className={classes.btn}
+                      onClick={() => DeleteElementHandler(list.id)}
+                    >
+                      <img src={deleteIcon} alt="delete Icon" />
+                    </button>
+                  </li>
+                ))
+              : active === "active"
+              ? activeNotes.map((list) => (
+                  <li key={list.id} className={classes["list-item-container"]}>
+                    <div>
+                      <button
+                        className={classes["check-box"]}
+                        onClick={() => {
+                          CompletedNoteHandler(list.id);
+                        }}
+                      >
+                        {!list.completed ? (
                           <div key={list.id} className={classes.circle}></div>
                         ) : (
                           <img key={list.id} src={checkIcon} alt="check Icon" />
@@ -195,8 +239,21 @@ const MainContainer = () => {
                     </button>
                   </li>
                 ))
-              : noteList.map((list) => (
-                  <li key={list.id} className={classes["list-item-container"]}>
+              : noteList.map((list, index) => (
+                  <li
+                    key={list.id}
+                    className={classes["list-item-container"]}
+                    draggable
+                    onDragStart={(e) => {
+                      OnDragStart(e, index);
+                    }}
+                    onDragEnter={(e) => {
+                      OnDragEnter(e, index);
+                    }}
+                    onDragEnd={(e) => {
+                      OnDragEnd(e, index);
+                    }}
+                  >
                     <div>
                       <button
                         className={classes["check-box"]}
@@ -204,7 +261,7 @@ const MainContainer = () => {
                           CompletedNoteHandler(list.id);
                         }}
                       >
-                        {!list.state ? (
+                        {!list.completed ? (
                           <div key={list.id} className={classes.circle}></div>
                         ) : (
                           <img key={list.id} src={checkIcon} alt="check Icon" />
@@ -212,7 +269,7 @@ const MainContainer = () => {
                       </button>
                       <span
                         key={list.id}
-                        className={list.isCrossed ? classes["list-item"] : ""}
+                        className={list.completed ? classes["list-item"] : ""}
                       >
                         {list.el}
                       </span>
@@ -227,13 +284,12 @@ const MainContainer = () => {
                 ))}
           </ul>
           <div className={classes.completed}>
-            <span>{notes.length} items left</span>
+            <span>{activenotes.length} items left</span>
             <button
               onClick={() => {
                 AlldeleteHandler();
               }}
             >
-              {" "}
               Clear Completed
             </button>
           </div>

@@ -8,15 +8,6 @@ body {
   height: 100%;
 }
 
-@font-face {
-  font-family: "JosefinSans-Bold";
-  src: url("./assets/fonts/JosefinSans-Bold.ttf") format("ttf");
-}
-
-@font-face {
-  font-family: "JosefinSans-Regular";
-  src: url("./assets/fonts/JosefinSans-Regular.ttf") format("ttf");
-}
 :root {
   font-family: "Josefin Sans", sans-serif;
 }

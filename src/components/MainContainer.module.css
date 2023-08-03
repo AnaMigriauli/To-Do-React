@@ -23,6 +23,9 @@
   display: flex;
   justify-content: center;
 }
+.dark-mode {
+  background: #171823;
+}
 .main {
   width: 327px;
   position: absolute;
@@ -36,7 +39,11 @@
   justify-content: space-between;
   margin-bottom: 40px;
 }
-
+.header button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
 .input-container {
   width: 100%;
   height: 48px;
@@ -44,15 +51,41 @@
   align-items: center;
   gap: 12px;
   background: #ffffff;
+  color: #393a4b;
   box-shadow: 0px 35px 50px -15px #c2c3d680;
   margin-bottom: 16px;
   border-radius: 8px;
   padding-left: 20px;
 }
+.input-container-dark {
+  background: #25273d;
+  box-shadow: 0px 35px 50px -15px #00000080;
+}
 .check-box {
   background: none;
   border: none;
   height: 20px;
+  width: 20px;
+  border-radius: 50%;
+}
+.check-box ::before {
+  content: "";
+  display: block;
+  width: 90%;
+  height: 90%;
+  background-color: #ffffff;
+  border-radius: 50%;
+  text-align: center;
+}
+.check-box-dark ::before {
+  background-color: #25273d !important;
+}
+
+/* Apply linear-gradient on hover */
+.check-box :hover {
+  background-image: linear-gradient(#55ddff, #c058f3);
+  border: none;
+  border-radius: 50%;
 }
 .circle {
   width: 20px;
@@ -60,8 +93,14 @@
   border: 1px solid #e3e4f1;
   border-radius: 50%;
   cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-
+.dark-circle {
+  border: 1px solid #393a4b;
+}
 .input-container input {
   width: 100%;
   border: none;
@@ -69,6 +108,10 @@
   caret-color: #3a7cfd;
 }
 
+.dark-input {
+  background: #25273d;
+  color: #c8cbe7;
+}
 .input-container input::placeholder {
   font-family: Josefin Sans;
   font-size: 12px;
@@ -80,12 +123,38 @@
 ul {
   list-style: none;
   background: #ffffff;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  max-height: 327px;
+  overflow: auto;
+}
+
+ul::-webkit-scrollbar {
+  width: 5px;
+  scrollbar-width: thin;
+}
+.dark-ul::-webkit-scrollbar-track {
+  background: #25273d;
+}
+
+ul::-webkit-scrollbar-thumb {
+  background: linear-gradient(225deg, #5596ff 0%, #ac2deb 100%);
   border-radius: 8px;
 }
+
+.dark-ul {
+  background: #25273d;
+}
+.dark-ul span {
+  color: #c8cbe7 !important;
+}
+
 ul span {
   cursor: pointer;
   margin-left: 12px;
+  color: #494c6b;
 }
+
 .list-item-container {
   display: flex;
   justify-content: space-between;
@@ -93,6 +162,9 @@ ul span {
   padding: 16px 20px;
   width: 100%;
   cursor: move;
+}
+.dark-list-item-container {
+  border-bottom: 1px solid #393a4b;
 }
 ul button {
   background: transparent;
@@ -110,9 +182,12 @@ ul button {
 .list-item-container div {
   display: flex;
 }
-.list-item {
+.iscrossed-light {
   color: #d1d2da;
   text-decoration: line-through;
+}
+.iscrossed-dark {
+  color: #4d5067 !important;
 }
 .completed {
   display: flex;
@@ -121,6 +196,13 @@ ul button {
   background: #ffffff;
   margin-bottom: 16px;
   box-shadow: 0px 35px 50px -15px #c2c3d680;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.dark-completed {
+  background: #25273d;
+  box-shadow: 0px 35px 50px -15px #00000080;
 }
 .completed span {
   font-family: "Josefin Sans", sans-serif;
@@ -144,6 +226,13 @@ ul button {
 .completed button:hover {
   color: #494c6b;
 }
+
+.dark-completed-btn {
+  color: #5b5e7e !important;
+}
+.dark-completed-btn:hover {
+  color: #e3e4f1 !important;
+}
 .footer {
   height: 48px;
   background: #ffffff;
@@ -153,6 +242,10 @@ ul button {
   justify-content: space-evenly;
   margin-bottom: 40px;
   border-radius: 8px;
+}
+.dark-footer {
+  background: #25273d;
+  box-shadow: 0px 35px 50px -15px #00000080;
 }
 
 .footer button {
@@ -165,7 +258,17 @@ ul button {
   border: none;
   cursor: pointer;
 }
+.footer-dark-btn {
+  color: #5b5e7e !important;
+}
+
+.footer-dark-btn:hover {
+  color: #e3e4f1 !important;
+}
 .footer button:first-child {
+  color: #3a7cfd;
+}
+.footer button:first-child:hover {
   color: #3a7cfd;
 }
 .footer button:hover {
@@ -178,4 +281,7 @@ ul button {
   letter-spacing: -0.19px;
   text-align: center;
   color: #9495a5;
+}
+.dark-drop {
+  color: #5b5e7e !important;
 }

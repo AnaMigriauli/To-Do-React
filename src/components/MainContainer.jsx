@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Fragment } from "react";
 import classes from "./MainContainer.module.css";
 import light from "../assets/images/Bitmap.svg";
 import dark from "../assets/images/darkbackground.svg";
@@ -7,6 +7,7 @@ import moonIcon from "../assets/images/Combined Shape.svg";
 import deleteIcon from "../assets/images/Combined Shape 2.svg";
 import checkIcon from "../assets/images/Group 3.svg";
 import sunIcon from "../assets/images/sun.svg";
+// import Button from "./UI/buttons";
 
 const getInitialState = () => {
   const noteList = localStorage.getItem("list");
@@ -168,7 +169,7 @@ const MainContainer = () => {
       >
         <div className={classes.main}>
           <div className={classes.header}>
-            <img src={logo} alt="logo" />
+            <img className={classes.logo} src={logo} alt="logo" />
             {
               <button
                 onClick={() => {
@@ -274,50 +275,97 @@ const MainContainer = () => {
               </li>
             ))}
           </ul>
-          <div
-            className={`${classes.completed} ${
-              mode ? classes["dark-completed"] : ""
-            }`}
-          >
-            <span>{activenotes.length} items left</span>
-            <button
-              className={mode ? classes["dark-completed-btn"] : ""}
-              onClick={() => {
-                AlldeleteHandler();
-              }}
+          {window.innerWidth < 600 ? (
+            <Fragment>
+              {" "}
+              <div
+                className={`${classes.completed} ${
+                  mode ? classes["dark-completed"] : ""
+                }`}
+              >
+                <span>{activenotes.length} items left</span>
+                <button
+                  className={mode ? classes["dark-completed-btn"] : ""}
+                  onClick={() => {
+                    AlldeleteHandler();
+                  }}
+                >
+                  Clear Completed
+                </button>
+              </div>
+              <div
+                className={`${classes.footer} ${
+                  mode ? classes["dark-footer"] : ""
+                }`}
+              >
+                <button
+                  onClick={() => {
+                    AllElementHandler();
+                  }}
+                >
+                  All
+                </button>
+                <button
+                  className={mode ? classes["footer-dark-btn"] : ""}
+                  onClick={() => {
+                    ActiveElementHandler();
+                  }}
+                >
+                  Active
+                </button>
+
+                <button
+                  className={mode ? classes["footer-dark-btn"] : ""}
+                  onClick={() => {
+                    CompletedElementHandler();
+                  }}
+                >
+                  Completed
+                </button>
+              </div>
+            </Fragment>
+          ) : (
+            <div
+              className={`${classes.completed} ${
+                mode ? classes["dark-completed"] : ""
+              }`}
             >
-              Clear Completed
-            </button>
-          </div>
-          <div
-            className={`${classes.footer} ${
-              mode ? classes["dark-footer"] : ""
-            }`}
-          >
-            <button
-              onClick={() => {
-                AllElementHandler();
-              }}
-            >
-              All
-            </button>
-            <button
-              className={mode ? classes["footer-dark-btn"] : ""}
-              onClick={() => {
-                ActiveElementHandler();
-              }}
-            >
-              Active
-            </button>
-            <button
-              className={mode ? classes["footer-dark-btn"] : ""}
-              onClick={() => {
-                CompletedElementHandler();
-              }}
-            >
-              Completed
-            </button>
-          </div>
+              <span>{activenotes.length} items left</span>
+
+              <button
+                onClick={() => {
+                  AllElementHandler();
+                }}
+              >
+                All
+              </button>
+              <button
+                className={mode ? classes["footer-dark-btn"] : ""}
+                onClick={() => {
+                  ActiveElementHandler();
+                }}
+              >
+                Active
+              </button>
+
+              <button
+                className={mode ? classes["footer-dark-btn"] : ""}
+                onClick={() => {
+                  CompletedElementHandler();
+                }}
+              >
+                Completed
+              </button>
+              <button
+                className={mode ? classes["dark-completed-btn"] : ""}
+                onClick={() => {
+                  AlldeleteHandler();
+                }}
+              >
+                Clear Completed
+              </button>
+            </div>
+          )}
           <span
             className={`${classes.drop} ${mode ? classes["dark-drop"] : ""}`}
           >

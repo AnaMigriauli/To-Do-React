@@ -1,0 +1,77 @@
+ul {
+  list-style: none;
+  background: var(--white-200);
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  max-height: 327px;
+  overflow: auto;
+}
+
+ul::-webkit-scrollbar {
+  width: 5px;
+  scrollbar-width: thin;
+}
+.dark-ul::-webkit-scrollbar-track {
+  background: var(--blue-300);
+}
+
+ul::-webkit-scrollbar-thumb {
+  background: linear-gradient(225deg, #5596ff 0%, #ac2deb 100%);
+  border-radius: 8px;
+}
+
+.dark-ul {
+  background: var(--blue-300);
+}
+.dark-ul span {
+  color: var(--white-400) !important;
+}
+
+ul span {
+  cursor: pointer;
+  margin-left: 12px;
+  color: var(--blue-500);
+}
+
+.list-item-container {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--white-300);
+  padding: 16px 20px;
+  width: 100%;
+  cursor: move;
+}
+.list-item-container .btn {
+  visibility: hidden;
+}
+
+.list-item-container:hover .btn {
+  visibility: visible;
+}
+.list-item-container div {
+  display: flex;
+}
+.dark-list-item-container {
+  border-bottom: 1px solid var(--blue-100);
+}
+ul button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+.iscrossed-light {
+  color: var(--white-600);
+  text-decoration: line-through;
+}
+.iscrossed-dark {
+  color: var(--blue-600) !important;
+}
+@media (min-width: 900px) {
+  .dark-ul {
+    max-height: 439px;
+  }
+  .list-item-container {
+    font-size: 18px;
+    padding: 20px 24px;
+  }
+}

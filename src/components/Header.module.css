@@ -1,0 +1,23 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 40px;
+}
+.header button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+@media (min-width: 900px) {
+  .logo {
+    width: 167px;
+    height: 40px;
+  }
+  .header {
+    margin-bottom: 48px;
+  }
+  .header button img {
+    height: 26px;
+    width: 26px;
+  }
+}

@@ -1,19 +1,22 @@
-import { useState, useEffect, useRef, Fragment } from "react";
+import { useState, useEffect, Fragment } from "react";
 import classes from "./MainContainer.module.css";
 import light from "../assets/images/Bitmap.svg";
 import dark from "../assets/images/darkbackground.svg";
-import logo from "../assets/images/TODO.svg";
-import moonIcon from "../assets/images/Combined Shape.svg";
-import deleteIcon from "../assets/images/Combined Shape 2.svg";
-import checkIcon from "../assets/images/Group 3.svg";
-import sunIcon from "../assets/images/sun.svg";
-// import Button from "./UI/buttons";
+import Header from "./Header";
+import AddNote from "./AddNote";
+import Button from "./Button";
+import ListItem from "./ListItems";
 
 const getInitialState = () => {
   const noteList = localStorage.getItem("list");
   return noteList ? JSON.parse(noteList) : [];
 };
 
+const initialMode = () => {
+  const mode = localStorage.getItem("mode");
+  console.log(mode);
+  return JSON.parse(mode);
+};
 const MainContainer = () => {
   const [noteList, setNoteList] = useState(getInitialState);
   const [note, setNote] = useState("");
@@ -21,15 +24,15 @@ const MainContainer = () => {
   const [completedNotes, setCompletedNotes] = useState([]);
   const [active, setActive] = useState("All");
   const [checked, setIsChecked] = useState(false);
-  const [mode, setMode] = useState(localStorage.getItem("mode" || true));
+  const [mode, setMode] = useState(initialMode);
 
   useEffect(() => {
-    localStorage.setItem("list", JSON.stringify(noteList));
-    localStorage.setItem("mode", mode);
+    localStorage.setItem("list", noteList && JSON.stringify(noteList));
+    localStorage.setItem("mode", mode && JSON.stringify(mode));
   }, [noteList, mode]);
 
   const ChangeModeHandler = () => {
-    mode === false ? setMode(true) : setMode(false);
+    setMode((prevMode) => !prevMode);
   };
 
   const CreateElementHandler = (item) => {
@@ -127,36 +130,6 @@ const MainContainer = () => {
       ? noteList
       : "";
 
-  //DRAG AND DROP
-  let dragItem = useRef();
-  let dragOverItem = useRef();
-
-  const OnDragStart = (e, index) => {
-    dragItem.current = index;
-  };
-
-  const OnDragEnter = (e, index) => {
-    dragOverItem.current = index;
-
-    const updatedNoteList = noteList.map((item, idx) => ({
-      ...item,
-      isDragging: idx === index,
-    }));
-
-    setNoteList(updatedNoteList);
-  };
-
-  const OnDragEnd = () => {
-    const updatedNoteList = [...noteList];
-
-    const draggedItem = updatedNoteList[dragItem.current];
-    updatedNoteList.splice(dragItem.current, 1);
-    updatedNoteList.splice(dragOverItem.current, 0, draggedItem);
-
-    dragItem.current = null;
-    dragOverItem.current = null;
-    setNoteList(updatedNoteList);
-  };
   return (
     <div className={classes["main-container"]}>
       <div className={classes["light-img"]}>
@@ -168,113 +141,27 @@ const MainContainer = () => {
         }`}
       >
         <div className={classes.main}>
-          <div className={classes.header}>
-            <img className={classes.logo} src={logo} alt="logo" />
-            {
-              <button
-                onClick={() => {
-                  ChangeModeHandler();
-                }}
-              >
-                <img src={!mode ? moonIcon : sunIcon} alt="moon/sun" />
-              </button>
-            }
-          </div>
-          <div
-            className={`${classes["input-container"]} ${
-              mode ? classes["input-container-dark"] : ""
-            }`}
-          >
-            <button
-              className={`${classes["check-box"]} ${
-                mode ? classes["check-box-dark"] : ""
-              }`}
-              onClick={() => CompletedTaskHandler()}
-            >
-              {!checked ? (
-                <div
-                  className={`${classes.circle} ${
-                    mode ? classes["dark-circle"] : ""
-                  }`}
-                ></div>
-              ) : (
-                <img src={checkIcon} alt="check Icon" />
-              )}
-            </button>
-
-            <input
-              className={`${checked ? classes["list-item"] : ""} ${
-                mode ? classes["dark-input"] : ""
-              }`}
-              placeholder="Create a new todo…"
-              value={note}
-              maxLength={35}
-              onKeyDown={(e) => {
-                e.key === "Enter" ? AddElementHandler() : "";
-              }}
-              onChange={(e) => {
-                CreateElementHandler(e.target.value);
-              }}
-            />
-          </div>
-          <ul className={mode ? classes["dark-ul"] : ""}>
-            {allNoteList.map((list, index) => (
-              <li
-                key={list.id}
-                className={`${classes["list-item-container"]} ${
-                  mode ? classes["dark-list-item-container"] : ""
-                }`}
-                draggable
-                onDragStart={(e) => {
-                  OnDragStart(e, index);
-                }}
-                onDragEnter={(e) => {
-                  OnDragEnter(e, index);
-                }}
-                onDragEnd={(e) => {
-                  OnDragEnd(e, index);
-                }}
-              >
-                <div>
-                  <button
-                    className={`${classes["check-box"]} ${
-                      mode ? classes["check-box-dark"] : ""
-                    }`}
-                    onClick={() => {
-                      CompletedNoteHandler(list.id);
-                    }}
-                  >
-                    {!list.completed ? (
-                      <div
-                        key={list.id}
-                        className={`${classes.circle} ${
-                          mode ? classes["dark-circle"] : ""
-                        }`}
-                      ></div>
-                    ) : (
-                      <img key={list.id} src={checkIcon} alt="check Icon" />
-                    )}
-                  </button>
-                  <span
-                    key={list.id}
-                    className={`${
-                      list.completed ? classes["iscrossed-light"] : ""
-                    }
-                    ${mode ? classes["iscrossed-dark"] : ""}
-                    `}
-                  >
-                    {list.el}
-                  </span>
-                </div>
-                <button
-                  className={classes.btn}
-                  onClick={() => DeleteElementHandler(list.id)}
-                >
-                  <img src={deleteIcon} alt="delete Icon" />
-                </button>
-              </li>
-            ))}
-          </ul>
+          <Header toggleMode={ChangeModeHandler} mode={mode} />
+          <AddNote
+            mode={mode}
+            completedTaskHandler={CompletedTaskHandler}
+            checked={checked}
+            note={note}
+            addElementHandler={AddElementHandler}
+            createElementHandler={CreateElementHandler}
+            placeholder="Create a new todo…"
+            checkBox={classes["check-box"]}
+            checkBoxDark={classes["check-box-dark"]}
+            circle={classes.circle}
+          />
+          <ListItem
+            mode={mode}
+            deleteElementHandler={DeleteElementHandler}
+            completedNoteHandler={CompletedNoteHandler}
+            allNoteList={allNoteList}
+            noteList={noteList}
+            setNoteList={setNoteList}
+          />
           {window.innerWidth < 600 ? (
             <Fragment>
               {" "}
@@ -284,44 +171,31 @@ const MainContainer = () => {
                 }`}
               >
                 <span>{activenotes.length} items left</span>
-                <button
-                  className={mode ? classes["dark-completed-btn"] : ""}
-                  onClick={() => {
-                    AlldeleteHandler();
-                  }}
-                >
-                  Clear Completed
-                </button>
+
+                <Button
+                  text="Clear Completed"
+                  mode={mode}
+                  onclick={AlldeleteHandler}
+                  classname={classes["dark-completed-btn"]}
+                />
               </div>
               <div
                 className={`${classes.footer} ${
                   mode ? classes["dark-footer"] : ""
                 }`}
               >
-                <button
-                  onClick={() => {
-                    AllElementHandler();
-                  }}
-                >
-                  All
-                </button>
-                <button
-                  className={mode ? classes["footer-dark-btn"] : ""}
-                  onClick={() => {
-                    ActiveElementHandler();
-                  }}
-                >
-                  Active
-                </button>
+                <Button text="All" onclick={AllElementHandler} />
 
-                <button
-                  className={mode ? classes["footer-dark-btn"] : ""}
-                  onClick={() => {
-                    CompletedElementHandler();
-                  }}
-                >
-                  Completed
-                </button>
+                <Button
+                  text="Active"
+                  classname={classes["footer-dark-btn"]}
+                  onclick={ActiveElementHandler}
+                />
+                <Button
+                  text=" Completed"
+                  onclick={CompletedElementHandler}
+                  classname={classes["footer-dark-btn"]}
+                />
               </div>
             </Fragment>
           ) : (
@@ -332,38 +206,26 @@ const MainContainer = () => {
             >
               <span>{activenotes.length} items left</span>
 
-              <button
-                onClick={() => {
-                  AllElementHandler();
-                }}
-              >
-                All
-              </button>
-              <button
-                className={mode ? classes["footer-dark-btn"] : ""}
-                onClick={() => {
-                  ActiveElementHandler();
-                }}
-              >
-                Active
-              </button>
+              <Button text="All" onclick={AllElementHandler} />
 
-              <button
-                className={mode ? classes["footer-dark-btn"] : ""}
-                onClick={() => {
-                  CompletedElementHandler();
-                }}
-              >
-                Completed
-              </button>
-              <button
-                className={mode ? classes["dark-completed-btn"] : ""}
-                onClick={() => {
-                  AlldeleteHandler();
-                }}
-              >
-                Clear Completed
-              </button>
+              <Button
+                text="Active"
+                mode={mode}
+                classname={classes["footer-dark-btn"]}
+                onclick={ActiveElementHandler}
+              />
+              <Button
+                text="Completed"
+                onclick={CompletedElementHandler}
+                mode={mode}
+                classname={classes["footer-dark-btn"]}
+              />
+              <Button
+                onclick={AlldeleteHandler}
+                mode={mode}
+                classname={classes["dark-completed-btn"]}
+                text="Clear Completed"
+              />
             </div>
           )}
           <span

@@ -10,6 +10,29 @@ body {
 
 :root {
   font-family: "Josefin Sans", sans-serif;
+  /* font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%; */
+
+  --white-100: #fafafa;
+  --white-200: #ffffff;
+  --white-300: #e3e4f1;
+  --white-400: #c8cbe7;
+  --white-500: #9495a5;
+  --white-600: #d1d2da;
+
+  --black-100: #171823;
+  --black-200: #00000080;
+
+  --blue-100: #393a4b;
+  --blue-200: #c2c3d680;
+  --blue-300: #25273d;
+  --blue-400: #3a7cfd;
+  --blue-500: #494c6b;
+  --blue-600: #4d5067;
+  --blue-700: #5b5e7e;
 }
 #root {
   display: flex;

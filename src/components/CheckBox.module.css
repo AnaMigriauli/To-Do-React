@@ -21,13 +21,14 @@
 
 .check-box :hover {
   background-image: linear-gradient(#55ddff, #c058f3);
-  border: none;
+  border: 1px solid transparent;
   border-radius: 50%;
 }
 .circle {
   width: 20px;
   height: 20px;
   border: 1px solid var(--white-300);
+
   border-radius: 50%;
   cursor: pointer;
   position: relative;

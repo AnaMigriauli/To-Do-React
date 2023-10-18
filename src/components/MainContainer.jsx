@@ -1,7 +1,7 @@
 import { useState, useEffect, Fragment } from "react";
 import classes from "./MainContainer.module.css";
 import light from "../assets/images/Bitmap.svg";
-import dark from "../assets/images/darkbackground.svg";
+import dark from "../assets/images/Bitmap (3).svg";
 import Header from "./Header";
 import AddNote from "./AddNote";
 import Button from "./Button";
@@ -14,7 +14,6 @@ const getInitialState = () => {
 
 const initialMode = () => {
   const mode = localStorage.getItem("mode");
-  console.log(mode);
   return JSON.parse(mode);
 };
 const MainContainer = () => {
@@ -164,7 +163,6 @@ const MainContainer = () => {
           />
           {window.innerWidth < 600 ? (
             <Fragment>
-              {" "}
               <div
                 className={`${classes.completed} ${
                   mode ? classes["dark-completed"] : ""

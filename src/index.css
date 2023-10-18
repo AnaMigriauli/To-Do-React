@@ -10,11 +10,6 @@ body {
 
 :root {
   font-family: "Josefin Sans", sans-serif;
-  /* font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%; */
 
   --white-100: #fafafa;
   --white-200: #ffffff;

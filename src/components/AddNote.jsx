@@ -16,18 +16,6 @@ const AddNote = ({
         mode ? classes["input-container-dark"] : ""
       }`}
     >
-      {/* <button
-        className={`${checkBox} ${mode ? checkBoxDark : ""}`}
-        onClick={completedTaskHandler}
-      >
-        {!checked ? (
-          <div
-            className={`${circle} ${mode ? classes["dark-circle"] : ""}`}
-          ></div>
-        ) : (
-          <img src={checkIcon} alt="check Icon" />
-        )}
-      </button> */}
       <CheckBox
         completed={checked}
         mode={mode}
